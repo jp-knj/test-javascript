@@ -1,6 +1,4 @@
-const {createJestRunner} = require('create-jest-runner')
-
-module.exports = createJestRunner(require.resolve('./node-runner'))const Worker = require('jest-worker').default
+const Worker = require('jest-worker').default
 const {fail, pass} = require('create-jest-runner')
 
 module.exports = async ({testPath}) => {
