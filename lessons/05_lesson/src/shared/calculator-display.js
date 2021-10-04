@@ -1,4 +1,5 @@
 import React from 'react'
+import {ThemeProvider} from 'emtoi'
 import PropTypes from 'prop-types'
 import AutoScalingText from './auto-scaling-text'
 import {getFormattedValue} from './utils'
