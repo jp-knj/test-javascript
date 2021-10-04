@@ -19,7 +19,7 @@ function CalculatorDisplay({value, ...props}) {
         background: '#1c191c',
         lineHeight: '130px',
         fontSize: '6em',
-        flex: '1',
+        flex: '2',
       }}
     >
       <AutoScalingText>{formattedValue}</AutoScalingText>
