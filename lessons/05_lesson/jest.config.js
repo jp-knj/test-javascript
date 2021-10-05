@@ -12,5 +12,6 @@ module.exports = {
      '\\.css$': require.resolve('./test/style-mock.js')
     },
     setupFilesAfterEnv: ['@testing-library/jest-dom/extend-expect'],
-    snapshotSerializers: ['@emotion/jest/serializer']
+    snapshotSerializers: ['@emotion/jest/serializer'],
+    collectCoverageFrom: ['**/src/**/*.js'],
 }
