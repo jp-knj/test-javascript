@@ -9,6 +9,7 @@ afterEach(() => {
   jest.clearAllMocks()
 })
 
+jest.mock('../api')
 function Bomb({shouldThrow}) {
   if (shouldThrow) {
     throw new Error('💣')
@@ -24,30 +25,12 @@ test('calls reportError and renders that there was a problem', () => {
       <Bomb />
     </ErrorBoundary>,
   )
-
   rerender(
     <ErrorBoundary>
       <Bomb shouldThrow={true} />
     </ErrorBoundary>,
   )
-
   const error = expect.any(Error)
   const info = {componentStack: expect.stringContaining('Bomb')}
   expect(mockReportError).toHaveBeenCalledWith(error, info)
-  expect(mockReportError).toHaveBeenCalledTimes(1)
 })
-
-// this is only here to make the error output not appear in the project's output
-// even though in the course we don't include this bit and leave it in it's incomplete state.
-beforeEach(() => {
-  jest.spyOn(console, 'error').mockImplementation(() => {})
-})
-
-afterEach(() => {
-  console.error.mockRestore()
-})
-
-/*
-eslint
-  jest/prefer-hooks-on-top: off
-*/
