@@ -5,7 +5,7 @@ import {GreetingLoader} from '../greeting-loader-01-mocking'
 
 jest.mock('../api')
 
-test('loads greetings on click', async () => {
+test('loads greeting on click', async () => {
   const testGreeting = 'TEST_GREETING'
   mockLoadGreeting.mockResolvedValueOnce({data: {greeting: testGreeting}})
   const {getByLabelText, getByText} = render(<GreetingLoader />)
