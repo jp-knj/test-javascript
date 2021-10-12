@@ -4,7 +4,7 @@ import {createMemoryHistory} from 'history'
 import {render, fireEvent} from '@testing-library/react'
 import {Main} from '../main'
 
-test('main renders about and home and I can navigate to those pages', () => {
+test('main renders about, home and I can navigate to those pages', () => {
   const history = createMemoryHistory({initialEntries: ['/']})
   const {getByRole, getByText} = render(
     <Router history={history}>
