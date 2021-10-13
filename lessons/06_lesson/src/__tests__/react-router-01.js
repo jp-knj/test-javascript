@@ -15,3 +15,15 @@ test('main renders about, home and I can navigate to those pages', () => {
   fireEvent.click(getByText(/about/i))
   expect(getByRole('heading')).toHaveTextContent(/about/i)
 })
+
+test('loading on a bad page shows no match component', () => {
+  const history = createMemoryHistory({
+    initialEntries: ['/something-that-does-not-match'],
+  })
+  const {getByRole} = render(
+    <Router history={history}>
+      <Main />
+    </Router>,
+  )
+  expect(getByRole('heading')).toHaveTextContent(/404/i)
+})
