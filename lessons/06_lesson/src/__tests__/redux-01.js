@@ -1,7 +1,7 @@
 import React from 'react'
-import {Provider} from 'react-redux'
-import {render, fireEvent} from '@testing-library/react'
+import {fireEvent, render} from '@testing-library/react'
 import {Counter} from '../redux-counter'
+import {Provider} from 'react-redux'
 import {store} from '../redux-store'
 
 test('can render with redux with defaults', () => {
