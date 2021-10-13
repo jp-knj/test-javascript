@@ -1,15 +1,28 @@
 import React from 'react'
+import {createStore} from 'redux'
 import {fireEvent, render} from '@testing-library/react'
 import {Counter} from '../redux-counter'
 import {Provider} from 'react-redux'
-import {store} from '../redux-store'
+import {store as appStore} from '../redux-store'
+import {reducer} from '../redux-reducer'
 
 test('can render with redux with defaults', () => {
   const {getByLabelText, getByText} = render(
-    <Provider store={store}>
+    <Provider store={appStore}>
       <Counter />
     </Provider>,
   )
   fireEvent.click(getByText('+'))
   expect(getByLabelText(/count/i)).toHaveTextContent('1')
+})
+
+test('can render with redux with custom initial state', () => {
+  const store = createStore(reducer, {count: 3})
+  const {getByLabelText, getByText} = render(
+    <Provider store={store}>
+      <Counter />
+    </Provider>,
+  )
+  fireEvent.click(getByText('-'))
+  expect(getByLabelText(/count/i)).toHaveTextContent('2')
 })
