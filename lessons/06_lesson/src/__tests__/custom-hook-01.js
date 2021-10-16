@@ -1,8 +1,8 @@
 import React from 'react'
-import {render, act} from '@testing-library/react'
 import {useCounter} from '../use-counter'
+import {render, act} from '@testing-library/react'
 
-test('exposes the count and increment/decrement functions', () => {
+test('expose the count and increment/decrement functions', () => {
   let result
   function TestComponent() {
     result = useCounter()
