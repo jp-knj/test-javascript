@@ -15,7 +15,7 @@ afterEach(() => {
   jest.useRealTimers()
 })
 
-test('does not attempt to set state when unmounted (to prevent memory leaks)', () => {
+test('does not attempt to state when unmounted to prevent memory leaks', () => {
   jest.useFakeTimers()
   const {unmount} = render(<Countdown />)
   unmount()
