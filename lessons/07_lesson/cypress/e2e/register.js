@@ -16,5 +16,7 @@ describe('registration', () => {
             .window()
             .its('localStorage.token')
             .should('be.a', 'string')
+            .findByTextId('username-display')
+            .should('have.text', user.username)
     })
 })
