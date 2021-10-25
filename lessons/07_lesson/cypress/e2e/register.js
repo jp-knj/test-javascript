@@ -1,9 +1,11 @@
+
+import {buildUser} from '../support/generate'
+
 describe('registration', () => {
     it('should register a new user', () => {
-        const user = { username: 'bob', password: 'yo'}
-
+        const user = buildUser()
         cy.visit('/')
-            .findByText('register/i')
+            .findByText(/register/i)
             .click()
             .findByLabelText(/username/i)
             .type(user.username)
@@ -16,7 +18,7 @@ describe('registration', () => {
             .window()
             .its('localStorage.token')
             .should('be.a', 'string')
-            .findByTextId('username-display')
+            .findByTestId('username-display')
             .should('have.text', user.username)
     })
 
