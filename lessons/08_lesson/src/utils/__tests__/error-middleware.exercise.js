@@ -2,21 +2,13 @@
 // 💯 write a test object factory
 
 import {UnauthorizedError} from 'express-jwt'
+import {buildRes, buildReq, buildNext} from 'utils/generate'
 import errorMiddleware from '../error-middleware'
 
-function buildRes(overrides) {
-    const res = {
-        json: jest.fn(() => res),
-        status: jest.fn(() => res)
-        ...overrides,
-    }
-    return res
-}
-
 test('responds with 401 for express-jwt UnauthorizedError', () => {
-    const req = {}
+    const req = buildReq()
     const res = buildRes()
-    const next = jest.fn()
+    const next = buildNext()
     const code = 'fake_code'
     const message = 'Fake Error Message'
     const error = new UnauthorizedError(code, {message})
@@ -32,9 +24,9 @@ test('responds with 401 for express-jwt UnauthorizedError', () => {
 })
 
 test('calls next if headersSent is true', () => {
-    const req = {}
+    const req = buildReq()
     const res = buildRes({headersSent: true})
-    const next = jest.fn()
+    const next = buildNext()
     const error = new Error('blah')
     errorMiddleware(error, req, res, next)
     expect(next).toHaveBeenCalledWith(error)
