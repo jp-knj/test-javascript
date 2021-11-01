@@ -7,7 +7,7 @@ import errorMiddleware from '../error-middleware'
 function buildRes(overrides) {
     const res = {
         json: jest.fn(() => res),
-        status: jest.fn(() => res),
+        status: jest.fn(() => res)
         ...overrides,
     }
     return res
