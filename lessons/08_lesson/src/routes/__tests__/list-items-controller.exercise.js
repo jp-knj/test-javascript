@@ -101,7 +101,7 @@ test('setListItem returns a 404 error if the list item does not exit', async () 
 test('getListItems returns a users list items', async () => {
     const user = buildUser()
     const books = [buildBook(), buildBook()]
-    const userListItem = [
+    const userListItems = [
         buildListItem({
             ownerId: user.id,
             bookId: books[0].id
@@ -134,3 +134,36 @@ test('getListItems returns a users list items', async () => {
     })
     expect(res.json).toHaveBeenCalledTimes(1)
 })
+
+test('createListItem creates and returns a list item', async () => {
+    const user = buildUser()
+    const book = buildBook()
+    const createdListItem = buildListItem({ownerId: user.id, bookId: book.id})
+    listItemsDB.query.mockResolvedValueOnce([])
+    listItemsDB.create.mockResolvedValueOnce(createdListItem)
+    booksDB.readById.mockResolvedValueOnce(book)
+
+    const req = buildReq({user, body: {bookId: book.id}})
+    const res = buildRes()
+
+    await listItemsController.createListItem(req, res)
+
+    expect(listItemsDB.query).toHaveBeenCalledWith({
+        ownerId: user.id,
+        bookId: book.id,
+    })
+    expect(listItemsDB.query).toHaveBeenCalledTimes(1)
+
+    expect(listItemsDB.create).toHaveBeenCalledWith({
+        ownerId: user.id,
+        bookId: book.id,
+    })
+    expect(listItemsDB.create).toHaveBeenCalledTimes(1)
+
+    expect(booksDB.readById).toHaveBeenCalledWith(book.id)
+    expect(booksDB.readById).toHaveBeenCalledTimes(1)
+
+    expect(res.json).toHaveBeenCalledWith({listItem: {...createdListItem, book}})
+    expect(res.json).toHaveBeenCalledTimes(1)
+})
+
