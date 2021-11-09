@@ -16,12 +16,18 @@ beforeEach(() => resetDb())
 
 test('auth flow', async () => {
     const {username, password} = generate.loginForm()
+
+    // register
     const response = await axios.post('http://localhost:8000/api/auth/register', {
         username,
-        password
+        password,
     })
 
-    console.log(response.data)
+    expect(response.data.user).toEqual({
+        token: expect.any(String),
+        id: expect.any(String),
+        username,
+    })
   // 🐨 get a username and password from generate.loginForm()
   //
   // register
