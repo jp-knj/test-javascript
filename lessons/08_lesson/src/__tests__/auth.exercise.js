@@ -16,6 +16,16 @@ beforeEach(() => resetDb())
 
 const baseURL = 'http://localhost:8000/api/';
 const api = axios.create({baseURL})
+api.interceptors.response.use(
+    function onSuccess(response) {
+        return response;
+    },
+    function onError(result) {
+        throw new Error(
+            `${result.response.status}: ${JSON.stringify(result.response.data)}`
+        );
+    }
+);
 test('auth flow', async () => {
     const {username, password} = generate.loginForm()
 
