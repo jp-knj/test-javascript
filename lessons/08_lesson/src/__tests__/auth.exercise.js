@@ -3,7 +3,7 @@
 import axios from 'axios'
 import {resetDb} from 'utils/db-utils'
 import * as generate from 'utils/generate'
-import {getData, handleRequestFailure} from 'utils/async'
+import { getData, handleRequestFailure, resolve } from 'utils/async'
 import startServer from '../start'
 
 let api, server
@@ -14,7 +14,7 @@ beforeAll(async () => {
     api.interceptors.response.use(getData, handleRequestFailure);
 })
 
-afterAll(async () => server.close())
+afterAll(() => server.close())
 
 beforeEach(() => resetDb())
 
@@ -41,3 +41,18 @@ test("auth flow", async () => {
     });
     expect(mData.user).toEqual(lData.user);
 });
+
+test('username must be unique', async () => {
+    const {username, password} = generate.loginForm()
+     await api.post('auth/register', {
+        username,
+        password,
+    })
+
+    const error  = await api.post('auth/register', {
+        username,
+        password,
+    }).catch(resolve)
+
+    expect(error).toMatchInlineSnapshot(`[Error: 400: {"message":"username taken"}`)
+})
