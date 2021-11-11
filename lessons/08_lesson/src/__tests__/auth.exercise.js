@@ -3,6 +3,7 @@
 import axios from 'axios'
 import {resetDb} from 'utils/db-utils'
 import * as generate from 'utils/generate'
+import {getData, handleRequestFailure} from 'utils/async'
 import startServer from '../start'
 
 let server
@@ -16,50 +17,28 @@ beforeEach(() => resetDb())
 
 const baseURL = 'http://localhost:8000/api/';
 const api = axios.create({baseURL})
-api.interceptors.response.use(
-    function onSuccess(response) {
-        return response;
-    },
-    function onError(result) {
-        throw new Error(
-            `${result.response.status}: ${JSON.stringify(result.response.data)}`
-        );
-    }
-);
-test('auth flow', async () => {
-    const {username, password} = generate.loginForm()
+api.interceptors.response.use(getData, handleRequestFailure);
 
-    const rResult = await api.post(`auth/register`, {
-        username,
-        password,
-    })
-    expect(rResult.data.user).toEqual({
+test("auth flow", async () => {
+    const { username, password } = generate.loginForm();
+
+    // register
+    const rData = await api.post("auth/register", { username, password });
+    expect(rData.user).toEqual({
         token: expect.any(String),
         id: expect.any(String),
-        username,
-    })
+        username
+    });
 
-    const lResult = await api.post(`auth/login`, {
-        username,
-        password,
-    })
-    expect(lResult.data.user).toEqual(rResult.data.user)
+    // login
+    const lData = await api.post("auth/login", { username, password });
+    expect(lData.user).toEqual(rData.user);
 
-    const mResult = await api.get(`auth/me`, {
+    // authenticated request
+    const mData = await api.get("auth/me", {
         headers: {
-            Authorization: `Bearer ${lResult.data.user.token}`,
+            Authorization: `Bearer ${lData.user.token}`
         }
-    })
-    expect(mResult.data.user).toEqual(lResult.data.user)
-
-  // authenticated request
-  // 🐨 use axios.get(url, config) to GET the user's information
-  // 💰 http://localhost:8000/api/auth/me
-  // 💰 This request must be authenticated via the Authorization header which
-  // you can add to the config object: {headers: {Authorization: `Bearer ${token}`}}
-  // Remember that you have the token from the registration and login requests.
-  //
-  // 🐨 assert that the result you get back is correct
-  // 💰 (again, this should be the same data you get back in the other requests,
-  // so you can compare it with that).
-})
+    });
+    expect(mData.user).toEqual(lData.user);
+});
