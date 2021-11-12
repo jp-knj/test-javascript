@@ -58,4 +58,9 @@ test('listItem CRUD', async () => {
     expect(error.data).toEqual({
         message: `No list item was found with the id of ${listItemId}`,
     })
+
+    const idlessMessage = error.data.message.replace(listItemId, "LIST_ITEM_ID");
+    expect(idlessMessage).toMatchInlineSnapshot(
+        `"No list item was found with the id of LIST_ITEM_ID"`
+    );
 })
