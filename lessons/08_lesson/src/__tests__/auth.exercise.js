@@ -3,8 +3,8 @@
 import axios from 'axios'
 import {resetDb} from 'utils/db-utils'
 import * as generate from 'utils/generate'
-import * as usersDB from "../db/users";
 import { getData, handleRequestFailure, resolve } from 'utils/async'
+import * as usersDB from "../db/users";
 import startServer from '../start'
 
 let api, server
